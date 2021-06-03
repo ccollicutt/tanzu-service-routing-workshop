@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dns
+  name: nginx-ingress 
+spec:
+  rules:
+  - host: nginx.USERX.sr.globalbanque.com 
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: nginx 
+            port: 
+              number: 80
+  tls: 
+  - hosts:
+    - nginx.USERX.sr.globalbanque.com 
+    secretName: nginx-USERX-sr-globalbanque-com-cert 

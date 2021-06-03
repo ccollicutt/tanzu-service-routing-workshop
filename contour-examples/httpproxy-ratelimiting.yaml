@@ -1,0 +1,17 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: ratelmiting
+spec:
+  virtualhost:
+    fqdn:  rl.USERX.sr.globalbanque.com
+    rateLimitPolicy:
+      local:
+        requests: 2
+        unit: minute
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: nginx
+          port: 80

@@ -1,0 +1,91 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: root-inclusion
+  namespace: root-inclusion
+spec:
+  virtualhost:
+    fqdn: root.sr.globalbanque.com
+  includes:
+  - name: user1
+    namespace: user1
+    conditions:
+    - prefix: /user1
+  - name: user2
+    namespace: user2
+    conditions:
+    - prefix: /user2
+  - name: user3
+    namespace: user3
+    conditions:
+    - prefix: /user3
+  - name: user4
+    namespace: user4
+    conditions:
+    - prefix: /user4
+  - name: user5
+    namespace: user5
+    conditions:
+    - prefix: /user5
+  - name: user6
+    namespace: user6
+    conditions:
+    - prefix: /user6
+  - name: user7
+    namespace: user7
+    conditions:
+    - prefix: /user7
+  - name: user8
+    namespace: user8
+    conditions:
+    - prefix: /user8
+  - name: user9
+    namespace: user9
+    conditions:
+    - prefix: /user9
+  - name: user10
+    namespace: user10
+    conditions:
+    - prefix: /user10
+  - name: user11
+    namespace: user11
+    conditions:
+    - prefix: /user11
+  - name: user12
+    namespace: user12
+    conditions:
+    - prefix: /user12
+  - name: user13
+    namespace: user13
+    conditions:
+    - prefix: /user13
+  - name: user14
+    namespace: user14
+    conditions:
+    - prefix: /user14
+  - name: user15
+    namespace: user15
+    conditions:
+    - prefix: /user15
+  - name: user16
+    namespace: user16
+    conditions:
+    - prefix: /user16
+  - name: user17
+    namespace: user17
+    conditions:
+    - prefix: /user17
+  - name: user18
+    namespace: user18
+    conditions:
+    - prefix: /user18
+  - name: user19
+    namespace: user19
+    conditions:
+    - prefix: /user19
+  - name: user20
+    namespace: user20
+    conditions:
+    - prefix: /user20
+

@@ -1,0 +1,15 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: USERX
+  namespace: USERX
+spec:
+  routes:
+    - services:
+        - name: nginx
+          port: 80
+      pathRewritePolicy:
+        replacePrefix:
+        - prefix: /USERX
+          replacement: /

@@ -1,0 +1,13 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: nginx-httpproxy
+spec:
+  virtualhost:
+    fqdn: nginx-httpproxy.USERX.sr.globalbanque.com 
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: nginx
+          port: 80
