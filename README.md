@@ -12,12 +12,6 @@ But how do they work? What would the decision tree be for these technologies? Wh
 
 In this workshop the participants will have access to a kubernetes cluster to test out some or all of these technologies.
 
-The domain for the workshop is below, and all user routes will be based on that.
-
-```
-sr.globalbanque.com
-```
-
 Participants will be provided login information and access to a Linux host to use kubectl.
 
 ## Workshop
@@ -51,6 +45,10 @@ Expected output:
 $ kubectl get ns
 Error from server (Forbidden): namespaces is forbidden: User "$USER" cannot list resource "namespaces" in API group "" at the cluster scope
 ```
+
+### OPTIONAL: Copy kubeconfig
+
+The workshop assumes commands will be run from the terminal/jumpbox server, but participants could also copy the kubeconfig from the terminal/jumpbox server to their local workstation if working from there is easier or more familiar.
 
 ### Clone this Repository
 
