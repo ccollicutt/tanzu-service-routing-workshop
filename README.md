@@ -52,6 +52,14 @@ $ kubectl get ns
 Error from server (Forbidden): namespaces is forbidden: User "$USER" cannot list resource "namespaces" in API group "" at the cluster scope
 ```
 
+### Clone this Repository
+
+* Clone this repository
+
+```
+git clone https://github.com/ccollicutt/tanzu-service-routing-workshop
+```
+
 ### Contour
 
 In this section of the workshop we'll look at Contour, an open source ingress controller, which actually does a lot more than simple ingress.
@@ -59,12 +67,11 @@ In this section of the workshop we'll look at Contour, an open source ingress co
 >Contour is an Ingress controller for Kubernetes that works by deploying the Envoy proxy as a reverse proxy and load balancer. Contour supports dynamic configuration updates out of the box while maintaining a lightweight profile.
 >Contour also introduces a new ingress API (HTTPProxy) which is implemented via a Custom Resource Definition (CRD). Its goal is to expand upon the functionality of the Ingress API to allow for a richer user experience as well as solve shortcomings in the original design. - [Contour Website](https://github.com/projectcontour/contour)
 
-#### Clone this Repository
+#### Use contour-examples
 
-* Clone this repository
+* Ensure you are in the correct directory
 
 ```
-git clone https://github.com/ccollicutt/tanzu-service-routing-workshop
 cd tanzu-service-routing-workshop/contour-examples
 ```
 
@@ -138,7 +145,7 @@ $ curl -s http://nginx.$USER.sr.globalbanque.com  | grep title
 * Deploy a basic HTTPProxy
 
 ```
-sed 's/USERX/$USER/g' basic-httpproxy.yaml | kubectl create -f -
+sed "s/USERX/$USER/g" basic-httpproxy.yaml | kubectl create -f -
 ```
 
 Expected output:
@@ -233,13 +240,16 @@ spec:
 * Create the  inclusion
 
 ```
-sed 's/USERX/$USER/g' httpproxy-user-inclusion.yml | k create -f -
+sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | k create -f -
 ```
 
 * Curl it
 
 ```
-curl -s root.sr.globalbanque.com/$USER | grep title
+until curl -s root.sr.globalbanque.com/$USER ; do
+   echo "sleeping..."
+   sleep 2
+done
 ```
 
 Example output:
@@ -256,7 +266,7 @@ The HTTPProxy API supports defining local rate limit policies that can be applie
 * Create the ratelimited HTTPProxy.
 
 ```
-sed 's/USERX/user1/g' httpproxy-ratelimiting.yaml | kubectl create -f -
+sed "s/USERX/$USER/g" httpproxy-ratelimiting.yaml | kubectl create -f -
 ```
 
 * Check DNS
@@ -267,13 +277,16 @@ sed 's/USERX/user1/g' httpproxy-ratelimiting.yaml | kubectl create -f -
 host rl.$USER.sr.globalbanque.com
 ```
 
- * Curl it:
+ * Curl it to find out when it's active
 
 ```
-curl -s rl.$USER.sr.globalbanque.com
+until curl -s rl.$USER.sr.globalbanque.com; do
+  echo "sleeping..."
+  sleep 2
+done
 ```
 
-Eventually you should get rate limited.
+* Run this curl command several times, eventually you will be rate limited
 
  ```
  $ curl -s rl.user1.sr.globalbanque.com
@@ -284,12 +297,20 @@ local_rate_limited
 
 TBD
 
+#### TLS
+
+TBD
+
 #### Conclusion
 
 After all of this we should have these ingress and httproxies.
 
 ```
-$ k get ing,httpproxies.projectcontour.io 
+kubectl get ing,httpproxies
+```
+
+```
+$ kubectl get ing,httpproxies.projectcontour.io 
 NAME                                      CLASS    HOSTS                             ADDRESS                                                                  PORTS     AGE
 ingress.networking.k8s.io/nginx-ingress   <none>   nginx.user1.sr.globalbanque.com   af7c4699894b04423906fd0800239329-818259978.us-east-2.elb.amazonaws.com   80, 443   20m
 
