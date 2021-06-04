@@ -33,7 +33,7 @@ $ kubectl get pods
 No resources found in $USER namespace.
 ```
 
-* List namespaces. NOTE: THhs will NOT work, and shouldn't work.
+* List namespaces. NOTE: This will NOT work, and shouldn't work.
 
 ```
 kubectl get ns
@@ -49,6 +49,8 @@ Error from server (Forbidden): namespaces is forbidden: User "$USER" cannot list
 ### OPTIONAL: Copy kubeconfig
 
 The workshop assumes commands will be run from the terminal/jumpbox server, but participants could also copy the kubeconfig from the terminal/jumpbox server to their local workstation if working from there is easier or more familiar.
+
+For most participants the optimal workflow will be to simply use the terminal/jumpbox and copy and paste commands from this README.
 
 ### Clone this Repository
 
@@ -297,7 +299,61 @@ TBD
 
 #### TLS
 
-TBD
+* First, create a certificate
+
+```
+sed "s/USERX/$USER/g" certificate.yaml | kubectl create -f - 
+```
+
+* Check if the certificate is available
+
+```
+kubectl get certificates
+```
+
+>NOTE: This can take a few minutes.
+
+Expected output:
+
+```
+$ kubectl get certificates
+NAME                                 READY   SECRET                               AGE
+tls-user1-sr-globalbanque-com-cert   True    tls-user1-sr-globalbanque-com-cert   2m8s
+```
+
+* Now we can use that certificate in a HTTPProxy
+
+Note the secret name:
+
+```
+    tls:
+      secretName: YOUR_TLS_SECRET
+```
+
+* Create the HTTPProxy
+
+```
+sed "s/USERX/$USER/g" httpproxy-with-tls.yaml | kubectl create -f -
+```
+
+* Curl the TLS URL
+
+```
+until host tls.$USER.sr.globalbanque.com; do
+  echo "sleeping..."
+  sleep 2
+done
+until curl -s https://tls.$USER.sr.globalbanque.com; do
+  echo "sleeping..."
+  sleep 2
+done
+```
+
+* Check the cert
+
+```
+echo |openssl s_client -showcerts -connect tls.$USER.sr.globalbanque.com:443
+```
 
 #### Conclusion
 
@@ -331,6 +387,7 @@ kubectl delete deploy --all
 for s in `kubectl get secrets | grep -v default-token | grep -v NAME | cut -f 1 -d " "`; do
   kubectl delete secret $s
 done
+rm -f tanzu-service-routing-workshop/
 ```
 
 Should be no resources left.
