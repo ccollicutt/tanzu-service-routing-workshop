@@ -1,0 +1,15 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: httpproxy-tls
+spec:
+  virtualhost:
+    fqdn: tls.USERX.sr.globalbanque.com 
+    tls:
+      secretName: tls-USERX-sr-globalbanque-com-cert
+  routes:
+    - conditions:
+      - prefix: /
+      services:
+        - name: nginx
+          port: 80
