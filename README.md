@@ -193,6 +193,8 @@ $ curl -s nginx-httpproxy.$USER.sr.globalbanque.com | grep title
 
 #### Inclusion and Delegation
 
+
+
 >HTTPProxy permits the splitting of a system’s configuration into separate HTTPProxy instances using inclusion.
 > Inclusion, as the name implies, allows for one HTTPProxy object to be included in another, optionally with some conditions inherited from the parent. Contour reads the inclusion tree and merges the included routes into one big object internally before rendering Envoy config. Importantly, the included HTTPProxy objects do not have to be in the same namespace. - [Contour Documentation](https://projectcontour.io/docs/main/config/inclusion-delegation/)
 
@@ -293,10 +295,6 @@ done
 local_rate_limited
 ```
 
-#### Upstream Weighting
-
-TBD
-
 #### TLS
 
 * First, create a certificate
@@ -355,6 +353,57 @@ done
 echo |openssl s_client -showcerts -connect tls.$USER.sr.globalbanque.com:443
 ```
 
+#### Upstream Weighting
+
+* Create a second service and deployment
+
+```
+kubectl create -f httpd-deployment.yaml 
+```
+
+* Setup a weighted route
+
+```
+sed "s/USERX/$USER/g" httpproxy-weighted-routing.yaml | kubectl create -f -
+```
+
+* Check the DNS entry...
+
+```
+until host wr.$USER.sr.globalbanque.com; do
+  echo "sleeping..."
+  sleep 2
+done
+```
+
+Expected output:
+
+```
+
+```
+
+* Test the ingress
+
+```
+until curl -s http://wr.$USER.sr.globalbanque.com; do
+   echo "sleeping..."
+   sleep 2
+done
+```
+
+* Keep curling it...
+
+```
+curl -s http://wr.$USER.sr.globalbanque.com
+```
+
+Approximately 9 out of 10 times the result should be the below, indicating that the httpd service is being used instead of the nginx service.
+
+```
+$ curl -s http://wr.$USER.sr.globalbanque.com
+<html><body><h1>It works!</h1></body></html>
+```
+
 #### Conclusion
 
 After all of this we should have these ingress and httproxies.
@@ -379,6 +428,7 @@ httpproxy.projectcontour.io/user1                                               
 To remove all the objects from the users namespace:
 
 ```
+cd ~
 kubectl config use-context $USER 
 kubectl delete ingress --all
 kubectl delete httpproxy --all
