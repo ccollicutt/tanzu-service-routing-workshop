@@ -222,7 +222,8 @@ This solves the problem of having multiple teams working in the same Kubernetes 
 >Note that the Contour deployment can have the `--root-namespace` configured. When this is configured Contour will  only look for root HTTPProxies in the namspaces set, which would be managed by an admin.
 
 ```
-$ grep -A 4 -B 4 root-namespace contour.yaml 
+# NOTE: Don't try to run this command, it's just an example of what we could configure for an organization
+...
         - --contour-cafile=/certs/ca.crt
         - --contour-cert-file=/certs/tls.crt
         - --contour-key-file=/certs/tls.key
@@ -232,6 +233,7 @@ $ grep -A 4 -B 4 root-namespace contour.yaml
         image: docker.io/projectcontour/contour:v1.16.0
         imagePullPolicy: IfNotPresent
         name: contour
+...
 ```
 
 * Example of a root inclusion
