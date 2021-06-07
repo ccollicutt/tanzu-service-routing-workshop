@@ -258,15 +258,13 @@ spec:
 ...
 ```
 
-* NOTE: The initial user inclusions have been created, but without the rewriting. This is because the root-inclusion will remain invalid until all the objects exist. 
+* NOTE: The initial user inclusions HTTPProxy objects have been created by the adm, but without the rewriting rule. This is because the root-inclusion will remain invalid until all the objects exist and if using external DNS, the hostname will not be created (until the root inclusion is valid). 
 
 * Review the existing inclusion
 
 ```
 kubectl get httpproxies.projectcontour.io $USER -oyaml
 ```
-
-
 
 * Update the user inclusion to include the rewrite rule
 
