@@ -269,14 +269,14 @@ kubectl get httpproxies.projectcontour.io $USER -oyaml
 * Update the user inclusion to include the rewrite rule
 
 ```
-sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | k apply -f -
+sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | kubectl apply -f -
 ```
 
 Example output:
 
 ```
-$ sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | k apply -f -
-Warning: resource httpproxies/user1 is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+$ sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | kubectl apply -f -
+Warning: resource httpproxies/$USER is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
 httpproxy.projectcontour.io/$USER configured
 ```
 
