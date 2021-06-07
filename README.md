@@ -214,8 +214,6 @@ $ curl -s nginx-httpproxy.$USER.sr.globalbanque.com | grep title
 
 #### Inclusion and Delegation
 
-
-
 >HTTPProxy permits the splitting of a system’s configuration into separate HTTPProxy instances using inclusion.
 > Inclusion, as the name implies, allows for one HTTPProxy object to be included in another, optionally with some conditions inherited from the parent. Contour reads the inclusion tree and merges the included routes into one big object internally before rendering Envoy config. Importantly, the included HTTPProxy objects do not have to be in the same namespace. - [Contour Documentation](https://projectcontour.io/docs/main/config/inclusion-delegation/)
 
@@ -260,10 +258,28 @@ spec:
 ...
 ```
 
-* Create the  inclusion
+* NOTE: The initial user inclusions have been created, but without the rewriting. This is because the root-inclusion will remain invalid until all the objects exist. 
+
+* Review the existing inclusion
 
 ```
-sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | k create -f -
+kubectl get httpproxies.projectcontour.io $USER -oyaml
+```
+
+
+
+* Update the user inclusion to include the rewrite rule
+
+```
+sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | k apply -f -
+```
+
+Example output:
+
+```
+$ sed "s/USERX/$USER/g" httpproxy-user-inclusion.yaml | k apply -f -
+Warning: resource httpproxies/user1 is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+httpproxy.projectcontour.io/$USER configured
 ```
 
 * Curl it
