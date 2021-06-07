@@ -46,6 +46,19 @@ $ kubectl get ns
 Error from server (Forbidden): namespaces is forbidden: User "$USER" cannot list resource "namespaces" in API group "" at the cluster scope
 ```
 
+* Use the `$USER` variable. We'll use this variable in many of the commands to "edit" the example Kubernetes YAML/manifests
+
+```
+echo $USER
+```
+
+Example output:
+
+```
+$ echo $USER
+user1
+```
+
 ### OPTIONAL: Copy kubeconfig
 
 The workshop assumes commands will be run from the terminal/jumpbox server, but participants could also copy the kubeconfig from the terminal/jumpbox server to their local workstation if working from there is easier or more familiar.
