@@ -221,8 +221,11 @@ This solves the problem of having multiple teams working in the same Kubernetes 
 
 >Note that the Contour deployment can have the `--root-namespace` configured. When this is configured Contour will  only look for root HTTPProxies in the namspaces set, which would be managed by an admin.
 
+| :large_blue_diamond: Don't try to run this command, it's just an example of what we could configure for an organization.
+|--------------------------------------------------------------------------|
+
+
 ```
-# NOTE: Don't try to run this command, it's just an example of what we could configure for an organization
 ...
         - --contour-cafile=/certs/ca.crt
         - --contour-cert-file=/certs/tls.crt
@@ -241,6 +244,9 @@ This solves the problem of having multiple teams working in the same Kubernetes 
 >NOTE: When you use an include + prefix, the prefix is not automatically removed, but you can remove it in the included HTTProxy object.
 
 This assumes that an admin user has created the root HTTPProxy, such as the below. Note the `include` section.
+
+| :large_blue_diamond: Don't try to run this command, it's just an example how the user inclusion is configured.
+|--------------------------------------------------------------------------|
 
 ```
 ---
