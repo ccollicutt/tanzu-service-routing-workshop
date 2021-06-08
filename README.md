@@ -480,7 +480,7 @@ kubectl delete deploy --all
 for s in `kubectl get secrets | grep -v default-token | grep -v NAME | cut -f 1 -d " "`; do
   kubectl delete secret $s
 done
-rm -f tanzu-service-routing-workshop/
+rm -rf tanzu-service-routing-workshop/
 ```
 
 Should be no resources left.
