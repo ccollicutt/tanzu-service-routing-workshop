@@ -16,6 +16,15 @@ Participants will be provided login information and access to a Linux host to us
 
 ## Workshop
 
+### About This Workshop
+
+Currently only the Contour part of the workshop has been completed.
+
+TODO:
+
+* Service Mesh
+* API Gateways
+
 ### Validate Access
 
 Please login to the terminal/jumpbox server with your user and password (which was provided to you by the workshop team).
